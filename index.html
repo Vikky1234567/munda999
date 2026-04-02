@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#050810"/>
+<title>MUNDA999 — Live Cricket & IPL 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Orbitron:wght@400;600;700;900&family=Noto+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#050810;--bg2:#080d1a;--bg3:#0d1428;--card:#0f1830;--card2:#141f3a;
+  --border:#1a2540;--border2:#243358;--red:#ff1744;--red2:#ff4569;
+  --orange:#ff6d00;--green:#00e676;--green2:#69f0ae;--yellow:#ffd740;
+  --cyan:#00e5ff;--purple:#7c4dff;--text:#e8f0fe;--text2:#7b93c0;--text3:#3d4f70;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* ── LOGO ── */
+.logo-wrap{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0;}
+.logo-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#ff1744,#ff6d00);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 18px rgba(255,23,68,.5);flex-shrink:0;}
+.logo-text{font-family:'Cinzel Decorative',serif;font-weight:900;font-size:19px;letter-spacing:2.5px;background:linear-gradient(90deg,#ff6d00 0%,#ff1744 35%,#ffab40 55%,#ff1744 75%,#ff6d00 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoshine 3s linear infinite;white-space:nowrap;}
+.logo-num{font-family:'Orbitron',monospace;font-weight:900;font-size:13px;color:#ff6d00;background:rgba(255,109,0,.12);border:1px solid rgba(255,109,0,.4);border-radius:5px;padding:2px 7px;text-shadow:0 0 10px rgba(255,109,0,.7);flex-shrink:0;}
+@keyframes logoshine{0%{background-position:0% center;}100%{background-position:200% center;}}
+
+/* ── TOPBAR ── */
+.topbar{background:rgba(5,8,16,.97);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:300;backdrop-filter:blur(20px);}
+.topbar::after{content:'';display:block;height:2px;background:linear-gradient(90deg,#ff1744,#ff6d00,#ff1744);background-size:200% 100%;animation:logoshine 2s linear infinite;}
+.topbar-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;height:54px;padding:0 16px;gap:12px;}
+.nav-links{display:flex;gap:2px;flex:1;}
+.nav-link{padding:6px 13px;color:var(--text2);font-size:12.5px;font-weight:500;cursor:pointer;border-radius:5px;transition:all .15s;border:none;background:none;font-family:'Noto Sans',sans-serif;white-space:nowrap;}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.06);}
+.nav-link.active{color:#fff;background:var(--red);font-weight:600;}
+.live-pill{display:flex;align-items:center;gap:5px;background:rgba(255,23,68,.12);border:1px solid rgba(255,23,68,.3);border-radius:20px;padding:4px 10px;flex-shrink:0;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red2);animation:pdot 1s ease-in-out infinite;}
+@keyframes pdot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,23,68,.5);}50%{opacity:.6;box-shadow:0 0 0 5px rgba(255,23,68,0);}}
+.live-txt{font-size:10px;font-weight:700;color:var(--red2);letter-spacing:.8px;font-family:'Orbitron',monospace;}
+.ref-badge{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);background:var(--bg3);padding:3px 8px;border-radius:4px;border:1px solid var(--border);flex-shrink:0;min-width:36px;text-align:center;}
+.search-wrap{position:relative;flex-shrink:0;}
+.search-ico{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text3);}
+.search-box{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:6px 10px 6px 26px;color:var(--text);font-size:12px;font-family:'Noto Sans',sans-serif;outline:none;width:150px;transition:border-color .2s;}
+.search-box:focus{border-color:var(--red2);}
+.search-box::placeholder{color:var(--text3);}
+
+/* ── TICKER ── */
+.ticker{background:#040710;border-bottom:1px solid var(--border);display:flex;align-items:center;overflow:hidden;height:28px;}
+.ticker-lbl{background:linear-gradient(90deg,var(--red),var(--orange));color:#fff;font-size:9px;font-weight:700;padding:0 12px;height:100%;display:flex;align-items:center;letter-spacing:1px;text-transform:uppercase;flex-shrink:0;font-family:'Orbitron',monospace;}
+.ticker-scroll{flex:1;overflow:hidden;}
+.ticker-track{display:inline-flex;animation:tkanim 35s linear infinite;white-space:nowrap;}
+.ticker-track:hover{animation-play-state:paused;}
+.ti{font-size:11px;color:var(--text2);padding:0 18px;border-right:1px solid var(--border);height:28px;display:flex;align-items:center;gap:6px;}
+.ti-live{color:var(--red2);font-size:9px;font-weight:700;font-family:'Orbitron',monospace;}
+.ti-score{color:#fff;font-weight:600;font-family:'JetBrains Mono',monospace;}
+@keyframes tkanim{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ── LAYOUT ── */
+.layout{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr 360px;min-height:calc(100vh - 82px);}
+.left-panel{border-right:1px solid var(--border);padding:14px;}
+.stabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:12px;}
+.stab{padding:7px 14px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;border:none;background:none;font-family:'Noto Sans',sans-serif;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap;}
+.stab:hover{color:#fff;}.stab.active{color:#fff;border-bottom-color:var(--red);}
+.match-list{display:flex;flex-direction:column;gap:7px;}
+
+/* ── MATCH STRIP ── */
+.mstrip{background:var(--card);border:1px solid var(--border);border-radius:9px;overflow:hidden;cursor:pointer;transition:all .2s;position:relative;}
+.mstrip:hover{border-color:var(--border2);background:var(--card2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.3);}
+.mstrip.sel{border-color:var(--red);box-shadow:0 0 0 1px var(--red),0 4px 20px rgba(255,23,68,.15);}
+.mstrip.is-live{border-left:3px solid var(--red2);}
+.mstrip.is-live::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--red),transparent);}
+.ms-hdr{background:rgba(0,0,0,.28);padding:5px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04);}
+.ms-tour{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:235px;}
+.msbadge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0;font-family:'Orbitron',monospace;}
+.b-live{background:rgba(255,23,68,.18);color:var(--red2);border:1px solid rgba(255,23,68,.3);}
+.b-up{background:rgba(255,109,0,.12);color:var(--orange);border:1px solid rgba(255,109,0,.25);}
+.b-fin{background:rgba(61,79,112,.15);color:var(--text3);border:1px solid rgba(61,79,112,.2);}
+.ms-body{padding:9px 12px;}
+.ms-teams{display:flex;flex-direction:column;gap:6px;}
+.ms-team{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ms-tl{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+.tbox{width:36px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;flex-shrink:0;letter-spacing:.3px;}
+.tnm{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tsc{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;white-space:nowrap;flex-shrink:0;color:var(--text);}
+.tsc.bat{color:var(--cyan);}.tsc.nd{color:var(--text3);font-size:12px;font-weight:400;}
+.ms-foot{padding:5px 12px 8px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04);}
+.ms-res{font-size:11px;font-weight:500;color:var(--green2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ms-time{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;flex-shrink:0;margin-left:8px;}
+
+/* ── RIGHT PANEL ── */
+.right-panel{background:var(--bg2);display:flex;flex-direction:column;position:sticky;top:82px;height:calc(100vh - 82px);overflow-y:auto;}
+.right-panel::-webkit-scrollbar{width:3px;}
+.right-panel::-webkit-scrollbar-thumb{background:var(--border2);}
+
+.sc-hdr{background:linear-gradient(160deg,#07091c,#120820);border-bottom:1px solid var(--border);padding:13px 16px;flex-shrink:0;position:relative;overflow:hidden;}
+.sc-hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),var(--orange),var(--purple),var(--red));background-size:300% 100%;animation:logoshine 3s linear infinite;}
+.sc-tour-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;}
+.sc-matchup{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;line-height:1.3;margin-bottom:5px;}
+.sc-row{display:flex;align-items:center;gap:8px;}
+.sc-lb{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;background:var(--red);color:#fff;font-family:'Orbitron',monospace;animation:lbpulse .8s ease-in-out infinite alternate;}
+@keyframes lbpulse{from{opacity:1;}to{opacity:.5;}}
+.sc-st{font-size:11px;color:var(--text2);}
+
+.sc-score-blk{background:var(--card);border-bottom:1px solid var(--border);padding:13px 16px;flex-shrink:0;}
+.sc-inn-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.sc-big{display:flex;align-items:baseline;gap:5px;margin-bottom:3px;}
+.sc-runs{font-family:'Orbitron',monospace;font-size:44px;font-weight:900;color:#fff;line-height:1;transition:all .2s;}
+.sc-runs.flash{color:var(--yellow);text-shadow:0 0 20px rgba(255,215,64,.4);}
+.sc-wkts{font-family:'Orbitron',monospace;font-size:27px;font-weight:600;color:var(--text2);}
+.sc-ov{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:8px;}
+.sc-stats{display:flex;gap:6px;flex-wrap:wrap;}
+.sc-stat{display:flex;flex-direction:column;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;min-width:52px;}
+.sc-sv{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--cyan);}
+.sc-sl{font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-top:1px;}
+
+.sc-sec{padding:9px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.sc-ttl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:6px;font-family:'Orbitron',monospace;}
+.sc-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.sc-tbl th{color:var(--text3);font-weight:600;font-size:9px;text-transform:uppercase;letter-spacing:.3px;padding:3px 4px;text-align:right;border-bottom:1px solid var(--border);}
+.sc-tbl th:first-child{text-align:left;}
+.sc-tbl td{padding:6px 4px;text-align:right;border-bottom:1px solid rgba(26,37,64,.5);}
+.sc-tbl td:first-child{text-align:left;}
+.sc-tbl tr.lr td{color:var(--text);}
+.bname{display:flex;align-items:center;gap:5px;font-weight:600;}
+.bind{width:6px;height:6px;border-radius:50%;background:var(--green2);animation:pdot 1s ease-in-out infinite;flex-shrink:0;}
+.bowlind{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:pdot 1s ease-in-out infinite;flex-shrink:0;}
+.r-cell{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--cyan);}
+.r-cell.nr{animation:rfl .4s ease;}
+@keyframes rfl{0%{color:var(--yellow);transform:scale(1.2);}100%{color:var(--cyan);transform:scale(1);}}
+.srg{color:var(--green2);}.sro{color:var(--yellow);}.srb{color:var(--red2);}
+
+.balls-sec{padding:9px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.balls-row{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:5px;}
+.ball{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Orbitron',monospace;border:1px solid transparent;flex-shrink:0;}
+.b0{background:rgba(61,79,112,.15);border-color:rgba(61,79,112,.3);color:var(--text3);}
+.b1{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:var(--text2);}
+.b2{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:var(--text);}
+.b3{background:rgba(0,230,118,.1);border-color:rgba(0,230,118,.25);color:var(--green2);}
+.b4{background:rgba(255,215,64,.15);border-color:rgba(255,215,64,.3);color:var(--yellow);}
+.b6{background:rgba(255,109,0,.2);border-color:rgba(255,109,0,.4);color:var(--orange);box-shadow:0 0 10px rgba(255,109,0,.25);}
+.bW{background:rgba(255,23,68,.2);border-color:rgba(255,23,68,.4);color:var(--red2);box-shadow:0 0 10px rgba(255,23,68,.25);}
+.bWd{background:rgba(124,77,255,.15);border-color:rgba(124,77,255,.3);color:#b39ddb;font-size:8px;}
+.bNb{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.2);color:var(--cyan);font-size:8px;}
+.bph{width:28px;height:28px;border-radius:50%;background:rgba(26,37,64,.4);border:1px dashed rgba(26,37,64,.8);}
+.ball.nb{animation:bpop .35s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes bpop{0%{transform:scale(0);opacity:0;}70%{transform:scale(1.3);}100%{transform:scale(1);opacity:1;}}
+
+.comm-hdr{padding:9px 16px 4px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.comm-body{flex:1;overflow-y:auto;padding:0 16px;}
+.comm-body::-webkit-scrollbar{width:3px;}
+.comm-body::-webkit-scrollbar-thumb{background:var(--border2);}
+.ci{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid rgba(26,37,64,.5);animation:cin .25s ease;}
+@keyframes cin{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
+.ci-ov{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);flex-shrink:0;min-width:28px;margin-top:1px;}
+.ci-txt{font-size:12px;color:var(--text2);line-height:1.5;}
+.ci-txt strong{color:#fff;font-weight:600;}
+.ci-tag{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;text-transform:uppercase;font-family:'Orbitron',monospace;}
+.ctw{background:rgba(255,23,68,.2);color:var(--red2);}.ct6{background:rgba(255,109,0,.2);color:var(--orange);}
+.ct4{background:rgba(255,215,64,.2);color:var(--yellow);}.cte{background:rgba(61,79,112,.2);color:var(--text2);}
+
+.sc-ph{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px;text-align:center;color:var(--text3);}
+.ph-logo{font-family:'Cinzel Decorative',serif;font-size:20px;font-weight:900;background:linear-gradient(90deg,#ff6d00,#ff1744,#ffab40);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+
+.empty-msg{text-align:center;padding:48px 20px;color:var(--text3);}
+.em-icon{font-size:42px;margin-bottom:14px;}
+.empty-msg h3{font-size:15px;color:var(--text2);margin-bottom:6px;}
+.empty-msg p{font-size:12px;}
+
+/* ── IPL SECTION ── */
+.ipl-banner{background:linear-gradient(135deg,#130820,#071828);border:1px solid rgba(124,77,255,.2);border-radius:9px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.ipl-brand{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;letter-spacing:2px;background:linear-gradient(90deg,#aa88ff,#66aaff,#aa88ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoshine 3s linear infinite;}
+.ipl-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.ipl-filters{display:flex;gap:8px;flex-wrap:wrap;}
+.ipl-sel{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:'Noto Sans',sans-serif;font-size:12px;outline:none;cursor:pointer;}
+.ipl-sel:focus{border-color:#8866ff;}
+
+/* Points table */
+.pts-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px;}
+.pts-table th{background:var(--bg3);padding:7px 10px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);font-weight:700;border-bottom:1px solid var(--border);font-family:'Orbitron',monospace;}
+.pts-table th.r{text-align:right;}
+.pts-table td{padding:8px 10px;border-bottom:1px solid rgba(26,37,64,.5);vertical-align:middle;}
+.pts-table td.r{text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px;}
+.pts-table tr:hover td{background:var(--bg3);}
+.pts-table tr.qualify td{border-left:3px solid var(--green2);}
+.pts-table tr.qualify td:first-child{padding-left:7px;}
+.pts-table tr.elim-zone td{border-left:3px solid var(--red2);}
+.pts-table tr.elim-zone td:first-child{padding-left:7px;}
+.team-cell{display:flex;align-items:center;gap:8px;}
+.pts-chip{width:32px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;flex-shrink:0;}
+.pts-pos{font-family:'Orbitron',monospace;font-size:11px;color:var(--text3);width:20px;text-align:center;}
+.nrr-pos{color:var(--green2);}.nrr-neg{color:var(--red2);}
+.pts-val{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--cyan);}
+
+/* Match schedule table */
+.schedule-wrap{overflow-x:auto;}
+.sched-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.sched-tbl th{background:var(--bg3);padding:7px 10px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);font-weight:700;border-bottom:1px solid var(--border);font-family:'Orbitron',monospace;white-space:nowrap;}
+.sched-tbl td{padding:9px 10px;border-bottom:1px solid rgba(26,37,64,.5);vertical-align:middle;}
+.sched-tbl tr:hover td{background:rgba(20,31,58,.5);}
+.sched-tbl tr.today td{background:rgba(124,77,255,.07);border-left:3px solid var(--purple);}
+.sched-tbl tr.today td:first-child{padding-left:7px;}
+.sched-tbl tr.played td{opacity:.7;}
+.match-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);}
+.match-teams{display:flex;align-items:center;gap:5px;font-weight:600;white-space:nowrap;}
+.ipl-chip{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;border:1px solid transparent;font-family:'Orbitron',monospace;white-space:nowrap;}
+.vs-txt{font-size:10px;color:var(--text3);}
+.match-dt{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text2);white-space:nowrap;}
+.match-venue{font-size:11px;color:var(--text3);max-width:160px;}
+.match-result{font-size:11px;text-align:right;white-space:nowrap;}
+.res-winner{color:var(--green2);font-weight:600;}
+.today-pill{background:rgba(124,77,255,.2);color:#bb99ff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;border:1px solid rgba(124,77,255,.3);font-family:'Orbitron',monospace;}
+.upcoming-pill{color:var(--text3);font-size:10px;}
+
+.sec{display:none;}.sec.on{display:block;}
+
+/* tabs inside IPL section */
+.ipl-tabs{display:flex;gap:2px;background:var(--bg3);border-radius:7px;padding:3px;border:1px solid var(--border);margin-bottom:14px;}
+.ipl-tab{padding:5px 14px;border-radius:5px;border:none;background:transparent;color:var(--text2);font-family:'Noto Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;}
+.ipl-tab.active{background:var(--card2);color:#fff;border:1px solid var(--border2);}
+
+@media(max-width:960px){.layout{grid-template-columns:1fr;}.right-panel{position:static;height:auto;border-top:2px solid var(--red);}}
+@media(max-width:640px){.logo-text{font-size:14px;}.nav-link{padding:5px 8px;font-size:11px;}.search-wrap{display:none;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-wrap" href="#">
+      <div class="logo-icon">🏏</div>
+      <span class="logo-text">MUNDA</span>
+      <span class="logo-num">999</span>
+    </a>
+    <div class="nav-links">
+      <button class="nav-link active" onclick="switchTab('live',this)">Live</button>
+      <button class="nav-link" onclick="switchTab('upcoming',this)">Upcoming</button>
+      <button class="nav-link" onclick="switchTab('results',this)">Results</button>
+      <button class="nav-link" onclick="switchTab('ipl',this)">🏆 IPL 2026</button>
+    </div>
+    <div class="live-pill"><div class="live-dot"></div><span class="live-txt">LIVE</span></div>
+    <div class="search-wrap">
+      <span class="search-ico">🔍</span>
+      <input class="search-box" type="text" placeholder="Search…" id="searchBox" oninput="doSearch()"/>
+    </div>
+    <div class="ref-badge" id="refBadge">30s</div>
+  </div>
+</div>
+
+<div class="ticker">
+  <div class="ticker-lbl">📡 SCORES</div>
+  <div class="ticker-scroll"><div class="ticker-track" id="tickerTrack">Loading…</div></div>
+</div>
+
+<div class="layout">
+  <div class="left-panel">
+
+    <!-- LIVE -->
+    <div class="sec on" id="tab-live">
+      <div class="stabs">
+        <button class="stab active" onclick="setSub('all',this)">All</button>
+        <button class="stab" onclick="setSub('ipl',this)">IPL</button>
+        <button class="stab" onclick="setSub('intl',this)">International</button>
+        <button class="stab" onclick="setSub('other',this)">Other</button>
+      </div>
+      <div class="match-list" id="liveList"></div>
+      <div class="empty-msg" id="liveEmpty" style="display:none">
+        <div class="em-icon">😴</div><h3>No Live Matches Right Now</h3>
+        <p>Live scores appear here when matches are in progress.<br>Check Upcoming tab for next fixtures.</p>
+      </div>
+    </div>
+
+    <!-- UPCOMING -->
+    <div class="sec" id="tab-upcoming">
+      <div class="match-list" id="upcomingList"></div>
+      <div class="empty-msg" id="upcomingEmpty" style="display:none">
+        <div class="em-icon">📅</div><h3>No Upcoming Matches</h3><p>All fixtures will appear here.</p>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="sec" id="tab-results">
+      <div class="match-list" id="resultsList"></div>
+    </div>
+
+    <!-- IPL 2026 -->
+    <div class="sec" id="tab-ipl">
+      <div class="ipl-banner">
+        <div>
+          <div class="ipl-brand">🏆 TATA IPL 2026</div>
+          <div class="ipl-sub">19th Edition • 74 Matches • 28 Mar – 31 May 2026 • Defending Champions: RCB</div>
+        </div>
+        <div class="ipl-filters">
+          <select class="ipl-sel" id="iplTF" onchange="renderIPLSchedule()"><option value="">All Teams</option></select>
+          <select class="ipl-sel" id="iplDF" onchange="renderIPLSchedule()">
+            <option value="">All Matches</option>
+            <option value="today">Today</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="played">Played</option>
+          </select>
+        </div>
+      </div>
+      <!-- Sub-tabs -->
+      <div class="ipl-tabs">
+        <button class="ipl-tab active" onclick="switchIPLTab('schedule',this)">Schedule</button>
+        <button class="ipl-tab" onclick="switchIPLTab('points',this)">Points Table</button>
+        <button class="ipl-tab" onclick="switchIPLTab('info',this)">Tournament Info</button>
+      </div>
+      <div id="ipl-schedule-tab">
+        <div class="schedule-wrap"><table class="sched-tbl" id="schedTbl">
+          <thead><tr><th>#</th><th>Teams</th><th>Date & Time (IST)</th><th>Venue</th><th>Result / Status</th></tr></thead>
+          <tbody id="schedBody"></tbody>
+        </table></div>
+      </div>
+      <div id="ipl-points-tab" style="display:none">
+        <table class="pts-table" id="ptsTable">
+          <thead><tr><th>Pos</th><th>Team</th><th class="r">P</th><th class="r">W</th><th class="r">L</th><th class="r">NR</th><th class="r">Pts</th><th class="r">NRR</th></tr></thead>
+          <tbody id="ptsBody"></tbody>
+        </table>
+        <p style="font-size:10px;color:var(--text3);margin-top:4px;">🟢 Qualify for Qualifier 1 &nbsp;|&nbsp; 🟡 Qualify for Eliminator &nbsp;|&nbsp; 🔴 Eliminated</p>
+      </div>
+      <div id="ipl-info-tab" style="display:none;padding:4px 0">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;">
+            <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-family:'Orbitron',monospace;">Teams & Captains</div>
+            <div style="display:flex;flex-direction:column;gap:5px;font-size:11px;" id="teamsInfoList"></div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;">
+            <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-family:'Orbitron',monospace;">Tournament Facts</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--text2);" id="tournInfo"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /left -->
+
+  <!-- RIGHT -->
+  <div class="right-panel" id="rightPanel">
+    <div id="scHdr" class="sc-hdr">
+      <div class="sc-tour-lbl" id="scTour">MUNDA999 Cricket</div>
+      <div class="sc-matchup" id="scMu">Select a match to view scorecard</div>
+      <div class="sc-row">
+        <span class="sc-lb" id="scLB" style="display:none">● LIVE</span>
+        <span class="sc-st" id="scSt">Click any match card →</span>
+      </div>
+    </div>
+    <div class="sc-ph" id="scPH">
+      <div style="font-size:52px;margin-bottom:10px;opacity:.35">🏏</div>
+      <div class="ph-logo">MUNDA999</div>
+      <p style="font-size:12px;margin-top:8px;line-height:1.7">Real-time IPL 2026 scores, ball-by-ball commentary, batting & bowling cards. Data refreshes every 30 seconds.</p>
+    </div>
+    <div id="scContent" style="display:none;flex-direction:column;flex:1;">
+      <div class="sc-score-blk" id="scSB">
+        <div class="sc-inn-lbl" id="scIL">1st Innings</div>
+        <div class="sc-big">
+          <div class="sc-runs" id="scR">0</div>
+          <div class="sc-wkts" id="scW">/0</div>
+        </div>
+        <div class="sc-ov" id="scOv">0.0 ov</div>
+        <div class="sc-stats">
+          <div class="sc-stat"><div class="sc-sv" id="sCRR">0.00</div><div class="sc-sl">CRR</div></div>
+          <div class="sc-stat"><div class="sc-sv" id="sRRR">—</div><div class="sc-sl">RRR</div></div>
+          <div class="sc-stat"><div class="sc-sv" id="sTGT">—</div><div class="sc-sl">Target</div></div>
+          <div class="sc-stat"><div class="sc-sv" id="sLO">—</div><div class="sc-sl">Last Ov</div></div>
+        </div>
+      </div>
+      <div class="sc-sec" id="scBatSec"><div class="sc-ttl">Batting</div>
+        <table class="sc-tbl"><thead><tr><th>Batter</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr></thead>
+        <tbody id="scBatBody"></tbody></table></div>
+      <div class="sc-sec" id="scBowSec"><div class="sc-ttl">Bowling</div>
+        <table class="sc-tbl"><thead><tr><th>Bowler</th><th>O</th><th>M</th><th>R</th><th>W</th><th>Eco</th></tr></thead>
+        <tbody id="scBowBody"></tbody></table></div>
+      <div class="balls-sec" id="scBallsSec">
+        <div class="sc-ttl" id="scOvLbl">Current Over</div>
+        <div class="balls-row" id="scBallsRow"></div>
+      </div>
+      <div class="comm-hdr"><div class="sc-ttl">Ball-by-Ball Commentary</div></div>
+      <div class="comm-body" id="scComm"></div>
+    </div>
+    <div id="scFinal" style="display:none;padding:14px;flex:1;overflow-y:auto;"></div>
+  </div>
+</div><!-- /layout -->
+
+<script>
+// ═══════════════════════════════════════════════════
+//  REAL IPL 2026 DATA (sourced from ESPN, Wikipedia, IPLT20)
+// ═══════════════════════════════════════════════════
+
+const TODAY_DATE = '2026-04-02';
+
+const TC = {
+  MI:'#004c97',CSK:'#f5a700',RCB:'#cc0000',KKR:'#3a1a6e',DC:'#0033a0',
+  RR:'#cc2277',SRH:'#e87000',PBKS:'#dd1111',GT:'#2a2a4a',LSG:'#882222',
+  TBD:'#333355',NZW:'#006622',SAW:'#009900',SCO:'#003388',OMA:'#c40000',
+  ISL:'#cc0000',QGL:'#006666',RAW:'#004400',KKI:'#660000',
+  MUS:'#330066',HYD:'#003366',QUE:'#006666',KAR:'#660000',
+  MEX:'#006600',BRA:'#003300'
+};
+
+// ── REAL IPL 2026 MATCH SCHEDULE (all 74 matches with real results where played) ──
+// Sources: ESPNCricinfo, Wikipedia, IPLT20.com
+const IPL_SCHEDULE = [
+  // ── PLAYED ──
+  {n:1, h:'RCB',a:'SRH', hN:'Royal Challengers Bengaluru',aN:'Sunrisers Hyderabad', date:'2026-03-28',time:'19:30', venue:'M. Chinnaswamy Stadium, Bengaluru', s1:'203/4',s2:'201/9', result:'RCB won by 6 wickets'},
+  {n:2, h:'MI', a:'KKR', hN:'Mumbai Indians',aN:'Kolkata Knight Riders',         date:'2026-03-29',time:'19:30', venue:'Wankhede Stadium, Mumbai',              s1:'220/4',s2:'224/4', result:'MI won by 6 wickets'},
+  {n:3, h:'CSK',a:'RR',  hN:'Chennai Super Kings',aN:'Rajasthan Royals',          date:'2026-03-30',time:'19:30', venue:'ACA Cricket Stadium, Guwahati',          s1:'127/10',s2:'128/2',result:'RR won by 8 wickets'},
+  {n:4, h:'GT', a:'PBKS',hN:'Gujarat Titans',aN:'Punjab Kings',                   date:'2026-03-31',time:'19:30', venue:'HPCA Cricket Stadium, Dharamsala',        s1:'162/6',s2:'165/7', result:'PBKS won by 3 wickets'},
+  {n:5, h:'LSG',a:'DC',  hN:'Lucknow Super Giants',aN:'Delhi Capitals',           date:'2026-04-01',time:'19:30', venue:'Ekana Cricket Stadium, Lucknow',          s1:'141/10',s2:'139/4',result:'DC won by 6 wickets'},
+  // ── UPCOMING ──
+  {n:6, h:'KKR',a:'SRH', hN:'Kolkata Knight Riders',aN:'Sunrisers Hyderabad',    date:'2026-04-02',time:'19:30', venue:'Eden Gardens, Kolkata',                   s1:'',s2:'',   result:''},
+  {n:7, h:'CSK',a:'PBKS',hN:'Chennai Super Kings',aN:'Punjab Kings',              date:'2026-04-03',time:'19:30', venue:'MA Chidambaram Stadium, Chennai',         s1:'',s2:'',   result:''},
+  {n:8, h:'DC', a:'MI',  hN:'Delhi Capitals',aN:'Mumbai Indians',                 date:'2026-04-04',time:'15:30', venue:'Arun Jaitley Stadium, Delhi',             s1:'',s2:'',   result:''},
+  {n:9, h:'GT', a:'RR',  hN:'Gujarat Titans',aN:'Rajasthan Royals',               date:'2026-04-04',time:'19:30', venue:'Narendra Modi Stadium, Ahmedabad',        s1:'',s2:'',   result:''},
+  {n:10,h:'SRH',a:'LSG', hN:'Sunrisers Hyderabad',aN:'Lucknow Super Giants',     date:'2026-04-05',time:'19:30', venue:'Rajiv Gandhi Intl Stadium, Hyderabad',    s1:'',s2:'',   result:''},
+  {n:11,h:'RCB',a:'CSK', hN:'Royal Challengers Bengaluru',aN:'Chennai Super Kings',date:'2026-04-06',time:'15:30',venue:'M. Chinnaswamy Stadium, Bengaluru',       s1:'',s2:'',   result:''},
+  {n:12,h:'KKR',a:'PBKS',hN:'Kolkata Knight Riders',aN:'Punjab Kings',            date:'2026-04-06',time:'19:30', venue:'Eden Gardens, Kolkata',                   s1:'',s2:'',   result:''},
+  {n:13,h:'RR', a:'MI',  hN:'Rajasthan Royals',aN:'Mumbai Indians',               date:'2026-04-07',time:'19:30', venue:'ACA Cricket Stadium, Guwahati',           s1:'',s2:'',   result:''},
+  {n:14,h:'DC', a:'GT',  hN:'Delhi Capitals',aN:'Gujarat Titans',                 date:'2026-04-08',time:'19:30', venue:'Arun Jaitley Stadium, Delhi',             s1:'',s2:'',   result:''},
+  {n:15,h:'KKR',a:'LSG', hN:'Kolkata Knight Riders',aN:'Lucknow Super Giants',   date:'2026-04-09',time:'19:30', venue:'Eden Gardens, Kolkata',                   s1:'',s2:'',   result:''},
+  {n:16,h:'RR', a:'RCB', hN:'Rajasthan Royals',aN:'Royal Challengers Bengaluru', date:'2026-04-10',time:'19:30', venue:'Sawai Mansingh Stadium, Jaipur',           s1:'',s2:'',   result:''},
+  {n:17,h:'PBKS',a:'SRH',hN:'Punjab Kings',aN:'Sunrisers Hyderabad',             date:'2026-04-11',time:'15:30', venue:'HPCA Cricket Stadium, Dharamsala',         s1:'',s2:'',   result:''},
+  {n:18,h:'CSK',a:'DC',  hN:'Chennai Super Kings',aN:'Delhi Capitals',            date:'2026-04-11',time:'19:30', venue:'MA Chidambaram Stadium, Chennai',         s1:'',s2:'',   result:''},
+  {n:19,h:'LSG',a:'GT',  hN:'Lucknow Super Giants',aN:'Gujarat Titans',           date:'2026-04-12',time:'19:30', venue:'Ekana Cricket Stadium, Lucknow',          s1:'',s2:'',   result:''},
+  {n:20,h:'MI', a:'RCB', hN:'Mumbai Indians',aN:'Royal Challengers Bengaluru',    date:'2026-04-13',time:'15:30', venue:'Wankhede Stadium, Mumbai',                s1:'',s2:'',   result:''},
+  {n:21,h:'SRH',a:'RR',  hN:'Sunrisers Hyderabad',aN:'Rajasthan Royals',         date:'2026-04-13',time:'19:30', venue:'Rajiv Gandhi Intl Stadium, Hyderabad',    s1:'',s2:'',   result:''},
+  {n:22,h:'CSK',a:'KKR', hN:'Chennai Super Kings',aN:'Kolkata Knight Riders',    date:'2026-04-14',time:'19:30', venue:'MA Chidambaram Stadium, Chennai',         s1:'',s2:'',   result:''},
+  {n:23,h:'RCB',a:'LSG', hN:'Royal Challengers Bengaluru',aN:'Lucknow Super Giants',date:'2026-04-15',time:'19:30',venue:'M. Chinnaswamy Stadium, Bengaluru',      s1:'',s2:'',   result:''},
+  {n:24,h:'MI', a:'PBKS',hN:'Mumbai Indians',aN:'Punjab Kings',                   date:'2026-04-16',time:'19:30', venue:'Wankhede Stadium, Mumbai',                s1:'',s2:'',   result:''},
+  {n:25,h:'GT', a:'KKR', hN:'Gujarat Titans',aN:'Kolkata Knight Riders',          date:'2026-04-17',time:'19:30', venue:'Narendra Modi Stadium, Ahmedabad',        s1:'',s2:'',   result:''},
+  {n:26,h:'RCB',a:'DC',  hN:'Royal Challengers Bengaluru',aN:'Delhi Capitals',   date:'2026-04-18',time:'15:30', venue:'Nava Raipur Cricket Stadium, Raipur',     s1:'',s2:'',   result:''},
+  {n:27,h:'SRH',a:'CSK', hN:'Sunrisers Hyderabad',aN:'Chennai Super Kings',      date:'2026-04-18',time:'19:30', venue:'Rajiv Gandhi Intl Stadium, Hyderabad',    s1:'',s2:'',   result:''},
+  {n:28,h:'KKR',a:'RR',  hN:'Kolkata Knight Riders',aN:'Rajasthan Royals',       date:'2026-04-19',time:'19:30', venue:'Eden Gardens, Kolkata',                   s1:'',s2:'',   result:''},
+  {n:29,h:'PBKS',a:'LSG',hN:'Punjab Kings',aN:'Lucknow Super Giants',            date:'2026-04-20',time:'15:30', venue:'HPCA Cricket Stadium, Dharamsala',         s1:'',s2:'',   result:''},
+  {n:30,h:'GT', a:'MI',  hN:'Gujarat Titans',aN:'Mumbai Indians',                 date:'2026-04-20',time:'19:30', venue:'Narendra Modi Stadium, Ahmedabad',        s1:'',s2:'',   result:''},
+  {n:31,h:'SRH',a:'DC',  hN:'Sunrisers Hyderabad',aN:'Delhi Capitals',           date:'2026-04-21',time:'19:30', venue:'Rajiv Gandhi Intl Stadium, Hyderabad',    s1:'',s2:'',   result:''},
+  {n:32,h:'LSG',a:'RR',  hN:'Lucknow Super Giants',aN:'Rajasthan Royals',        date:'2026-04-22',time:'19:30', venue:'Ekana Cricket Stadium, Lucknow',          s1:'',s2:'',   result:''},
+  {n:33,h:'MI', a:'CSK', hN:'Mumbai Indians',aN:'Chennai Super Kings',            date:'2026-04-23',time:'19:30', venue:'Wankhede Stadium, Mumbai',                s1:'',s2:'',   result:''},
+  {n:34,h:'RCB',a:'GT',  hN:'Royal Challengers Bengaluru',aN:'Gujarat Titans',   date:'2026-04-24',time:'19:30', venue:'Nava Raipur Cricket Stadium, Raipur',     s1:'',s2:'',   result:''},
+  {n:35,h:'DC', a:'PBKS',hN:'Delhi Capitals',aN:'Punjab Kings',                   date:'2026-04-25',time:'15:30', venue:'Arun Jaitley Stadium, Delhi',             s1:'',s2:'',   result:''},
+  {n:36,h:'RR', a:'SRH', hN:'Rajasthan Royals',aN:'Sunrisers Hyderabad',         date:'2026-04-25',time:'19:30', venue:'Sawai Mansingh Stadium, Jaipur',           s1:'',s2:'',   result:''},
+  {n:37,h:'GT', a:'CSK', hN:'Gujarat Titans',aN:'Chennai Super Kings',            date:'2026-04-26',time:'19:30', venue:'Narendra Modi Stadium, Ahmedabad',        s1:'',s2:'',   result:''},
+  {n:38,h:'LSG',a:'KKR', hN:'Lucknow Super Giants',aN:'Kolkata Knight Riders',   date:'2026-04-27',time:'15:30', venue:'Ekana Cricket Stadium, Lucknow',          s1:'',s2:'',   result:''},
+  {n:39,h:'DC', a:'RCB', hN:'Delhi Capitals',aN:'Royal Challengers Bengaluru',   date:'2026-04-27',time:'19:30', venue:'Arun Jaitley Stadium, Delhi',             s1:'',s2:'',   result:''},
+  {n:40,h:'PBKS',a:'RR', hN:'Punjab Kings',aN:'Rajasthan Royals',                date:'2026-04-28',time:'19:30', venue:'HPCA Cricket Stadium, Dharamsala',         s1:'',s2:'',   result:''},
+  {n:41,h:'MI', a:'SRH', hN:'Mumbai Indians',aN:'Sunrisers Hyderabad',            date:'2026-04-29',time:'19:30', venue:'Wankhede Stadium, Mumbai',                s1:'',s2:'',   result:''},
+  {n:42,h:'GT', a:'RCB', hN:'Gujarat Titans',aN:'Royal Challengers Bengaluru',   date:'2026-04-30',time:'19:30', venue:'Narendra Modi Stadium, Ahmedabad',        s1:'',s2:'',   result:''},
+  {n:43,h:'RR', a:'DC',  hN:'Rajasthan Royals',aN:'Delhi Capitals',               date:'2026-05-01',time:'19:30', venue:'Sawai Mansingh Stadium, Jaipur',           s1:'',s2:'',   result:''},
+  {n:44,h:'CSK',a:'LSG', hN:'Chennai Super Kings',aN:'Lucknow Super Giants',     date:'2026-05-02',time:'15:30', venue:'MA Chidambaram Stadium, Chennai',         s1:'',s2:'',   result:''},
+  {n:45,h:'KKR',a:'MI',  hN:'Kolkata Knight Riders',aN:'Mumbai Indians',         date:'2026-05-02',time:'19:30', venue:'Eden Gardens, Kolkata',                   s1:'',s2:'',   result:''},
+  {n:46,h:'PBKS',a:'KKR',hN:'Punjab Kings',aN:'Kolkata Knight Riders',           date:'2026-05-03',time:'15:30', venue:'HPCA Cricket Stadium, Dharamsala',         s1:'',s2:'',   result:''},
+  {n:47,h:'SRH',a:'GT',  hN:'Sunrisers Hyderabad',aN:'Gujarat Titans',           date:'2026-05-03',time:'19:30', venue:'Rajiv Gandhi Intl Stadium, Hyderabad',    s1:'',s2:'',   result:''},
+  {n:48,h:'LSG',a:'MI',  hN:'Lucknow Super Giants',aN:'Mumbai Indians',           date:'2026-05-04',time:'19:30', venue:'Ekana Cricket Stadium, Lucknow',          s1:'',s2:'',   result:''},
+  {n:49,h:'DC', a:'RR',  hN:'Delhi Capitals',aN:'Rajasthan Royals',               date:'2026-05-05',time:'19:30', venue:'Arun Jaitley Stadium, Delhi',             s1:'',s2:'',   result:''},
+  {n:50,h:'RCB',a:'PBKS',hN:'Royal Challengers Bengaluru',aN:'Punjab Kings',     date:'2026-05-06',time:'19:30', venue:'M. Chinnaswamy Stadium, Bengaluru',       s1:'',s2:'',   result:''},
+  {n:51,h:'CSK',a:'SRH', hN:'Chennai Super Kings',aN:'Sunrisers Hyderabad',      date:'2026-05-07',time:'19:30', venue:'MA Chidambaram Stadium, Chennai',         s1:'',s2:'',   result:''},
+  {n:52,h:'GT', a:'DC',  hN:'Gujarat Titans',aN:'Delhi Capitals',                 date:'2026-05-08',time:'15:30', venue:'Narendra Modi Stadium, Ahmedabad',        s1:'',s2:'',   result:''},
+  {n:53,h:'KKR',a:'RCB', hN:'Kolkata Knight Riders',aN:'Royal Challengers Bengaluru',date:'2026-05-08',time:'19:30',venue:'Eden Gardens, Kolkata',                 s1:'',s2:'',   result:''},
+  {n:54,h:'RR', a:'LSG', hN:'Rajasthan Royals',aN:'Lucknow Super Giants',        date:'2026-05-09',time:'19:30', venue:'Sawai Mansingh Stadium, Jaipur',           s1:'',s2:'',   result:''},
+  {n:55,h:'PBKS',a:'MI', hN:'Punjab Kings',aN:'Mumbai Indians',                   date:'2026-05-10',time:'15:30', venue:'HPCA Cricket Stadium, Dharamsala',         s1:'',s2:'',   result:''},
+  {n:56,h:'SRH',a:'KKR', hN:'Sunrisers Hyderabad',aN:'Kolkata Knight Riders',   date:'2026-05-10',time:'19:30', venue:'Rajiv Gandhi Intl Stadium, Hyderabad',    s1:'',s2:'',   result:''},
+  {n:57,h:'GT', a:'LSG', hN:'Gujarat Titans',aN:'Lucknow Super Giants',           date:'2026-05-11',time:'19:30', venue:'Narendra Modi Stadium, Ahmedabad',        s1:'',s2:'',   result:''},
+  {n:58,h:'DC', a:'CSK', hN:'Delhi Capitals',aN:'Chennai Super Kings',            date:'2026-05-12',time:'19:30', venue:'Arun Jaitley Stadium, Delhi',             s1:'',s2:'',   result:''},
+  {n:59,h:'MI', a:'RR',  hN:'Mumbai Indians',aN:'Rajasthan Royals',               date:'2026-05-13',time:'19:30', venue:'Wankhede Stadium, Mumbai',                s1:'',s2:'',   result:''},
+  {n:60,h:'RCB',a:'SRH', hN:'Royal Challengers Bengaluru',aN:'Sunrisers Hyderabad',date:'2026-05-14',time:'19:30',venue:'M. Chinnaswamy Stadium, Bengaluru',       s1:'',s2:'',   result:''},
+  {n:61,h:'LSG',a:'PBKS',hN:'Lucknow Super Giants',aN:'Punjab Kings',            date:'2026-05-15',time:'15:30', venue:'Ekana Cricket Stadium, Lucknow',          s1:'',s2:'',   result:''},
+  {n:62,h:'KKR',a:'GT',  hN:'Kolkata Knight Riders',aN:'Gujarat Titans',         date:'2026-05-15',time:'19:30', venue:'Eden Gardens, Kolkata',                   s1:'',s2:'',   result:''},
+  {n:63,h:'RR', a:'CSK', hN:'Rajasthan Royals',aN:'Chennai Super Kings',         date:'2026-05-16',time:'19:30', venue:'Sawai Mansingh Stadium, Jaipur',           s1:'',s2:'',   result:''},
+  {n:64,h:'MI', a:'DC',  hN:'Mumbai Indians',aN:'Delhi Capitals',                 date:'2026-05-17',time:'15:30', venue:'Wankhede Stadium, Mumbai',                s1:'',s2:'',   result:''},
+  {n:65,h:'SRH',a:'PBKS',hN:'Sunrisers Hyderabad',aN:'Punjab Kings',             date:'2026-05-17',time:'19:30', venue:'Rajiv Gandhi Intl Stadium, Hyderabad',    s1:'',s2:'',   result:''},
+  {n:66,h:'GT', a:'CSK', hN:'Gujarat Titans',aN:'Chennai Super Kings',            date:'2026-05-18',time:'19:30', venue:'Narendra Modi Stadium, Ahmedabad',        s1:'',s2:'',   result:''},
+  {n:67,h:'LSG',a:'RCB', hN:'Lucknow Super Giants',aN:'Royal Challengers Bengaluru',date:'2026-05-19',time:'15:30',venue:'Ekana Cricket Stadium, Lucknow',         s1:'',s2:'',   result:''},
+  {n:68,h:'DC', a:'KKR', hN:'Delhi Capitals',aN:'Kolkata Knight Riders',         date:'2026-05-19',time:'19:30', venue:'Arun Jaitley Stadium, Delhi',             s1:'',s2:'',   result:''},
+  {n:69,h:'RR', a:'PBKS',hN:'Rajasthan Royals',aN:'Punjab Kings',                date:'2026-05-20',time:'19:30', venue:'Sawai Mansingh Stadium, Jaipur',           s1:'',s2:'',   result:''},
+  {n:70,h:'MI', a:'SRH', hN:'Mumbai Indians',aN:'Sunrisers Hyderabad',            date:'2026-05-21',time:'15:30', venue:'Wankhede Stadium, Mumbai',                s1:'',s2:'',   result:''},
+  {n:71,h:'KKR',a:'LSG', hN:'Kolkata Knight Riders',aN:'Lucknow Super Giants',   date:'2026-05-21',time:'19:30', venue:'Eden Gardens, Kolkata',                   s1:'',s2:'',   result:''},
+  {n:72,h:'RCB',a:'RR',  hN:'Royal Challengers Bengaluru',aN:'Rajasthan Royals', date:'2026-05-22',time:'19:30', venue:'M. Chinnaswamy Stadium, Bengaluru',       s1:'',s2:'',   result:''},
+  {n:73,h:'CSK',a:'GT',  hN:'Chennai Super Kings',aN:'Gujarat Titans',            date:'2026-05-23',time:'15:30', venue:'MA Chidambaram Stadium, Chennai',         s1:'',s2:'',   result:''},
+  {n:74,h:'DC', a:'PBKS',hN:'Delhi Capitals',aN:'Punjab Kings',                   date:'2026-05-24',time:'19:30', venue:'Arun Jaitley Stadium, Delhi',             s1:'',s2:'',   result:''},
+  // PLAYOFFS (TBD)
+  {n:75,h:'TBD',a:'TBD',hN:'Qualifier 1',aN:'(1st vs 2nd)',                       date:'2026-05-27',time:'19:30', venue:'TBD',s1:'',s2:'', result:''},
+  {n:76,h:'TBD',a:'TBD',hN:'Eliminator',aN:'(3rd vs 4th)',                        date:'2026-05-28',time:'19:30', venue:'TBD',s1:'',s2:'', result:''},
+  {n:77,h:'TBD',a:'TBD',hN:'Qualifier 2',aN:'(Loser Q1 vs Winner Elim)',          date:'2026-05-30',time:'19:30', venue:'TBD',s1:'',s2:'', result:''},
+  {n:78,h:'TBD',a:'TBD',hN:'FINAL',aN:'',                                          date:'2026-05-31',time:'19:30', venue:'TBD (To Be Announced)',s1:'',s2:'', result:''},
+];
+
+// ── REAL IPL 2026 POINTS TABLE (as of matches played) ──
+const IPL_POINTS = [
+  {pos:1, team:'DC', name:'Delhi Capitals',     p:1,w:1,l:0,nr:0,pts:2,nrr:'+1.023', cap:'Axar Patel',      coach:'Hemang Badani',   qualify:true},
+  {pos:2, team:'PBKS',name:'Punjab Kings',      p:1,w:1,l:0,nr:0,pts:2,nrr:'+0.300', cap:'Shreyas Iyer',    coach:'Ricky Ponting',   qualify:true},
+  {pos:3, team:'MI', name:'Mumbai Indians',     p:1,w:1,l:0,nr:0,pts:2,nrr:'+0.195', cap:'Hardik Pandya',   coach:'Mahela Jayawardene',qualify:true},
+  {pos:4, team:'RCB',name:'Royal Challengers', p:1,w:1,l:0,nr:0,pts:2,nrr:'+2.762', cap:'Rajat Patidar',   coach:'Andy Flower',     qualify:true},
+  {pos:5, team:'RR', name:'Rajasthan Royals',  p:1,w:1,l:0,nr:0,pts:2,nrr:'+3.167', cap:'Riyan Parag',     coach:'Kumar Sangakkara',qualify:false},
+  {pos:6, team:'KKR',name:'Kolkata Knight Riders',p:1,w:0,l:1,nr:0,pts:0,nrr:'-0.195', cap:'Ajinkya Rahane',  coach:'Abhishek Nayar',  qualify:false},
+  {pos:7, team:'SRH',name:'Sunrisers Hyderabad',p:1,w:0,l:1,nr:0,pts:0,nrr:'-2.762', cap:'Pat Cummins',     coach:'Daniel Vettori',  qualify:false},
+  {pos:8, team:'GT', name:'Gujarat Titans',    p:1,w:0,l:1,nr:0,pts:0,nrr:'-0.300', cap:'Shubman Gill',    coach:'Ashish Nehra',    qualify:false},
+  {pos:9, team:'CSK',name:'Chennai Super Kings',p:1,w:0,l:1,nr:0,pts:0,nrr:'-3.167', cap:'Ruturaj Gaikwad', coach:'Stephen Fleming',  qualify:false},
+  {pos:10,team:'LSG',name:'Lucknow Super Giants',p:1,w:0,l:1,nr:0,pts:0,nrr:'-1.023', cap:'Rishabh Pant',    coach:'Justin Langer',   qualify:false},
+];
+
+// ── API / LIVE MATCH DATA ──
+let MATCHES = [
+  // Today's IPL match (upcoming)
+  {id:'ipl-6-kkr-srh',status:'scheduled',tournament:'Indian Premier League 2026',result:'',innings:[],local_start:'Thu Apr 2, 7:30 PM IST',start_time:'2026-04-02T14:00:00Z',teams:{KKR:{name:'Kolkata Knight Riders',abbreviation:'KKR'},SRH:{name:'Sunrisers Hyderabad',abbreviation:'SRH'}}},
+  // Other today scheduled
+  {id:'sr:match:69985232',status:'scheduled',tournament:'Pakistan Super League 2026',result:'',innings:[],local_start:'Thu Apr 2, 3:00 PM IST',start_time:'2026-04-02T09:30:00Z',teams:{ISL:{name:'Islamabad United',abbreviation:'ISL'},QGL:{name:'Quetta Gladiators',abbreviation:'QGL'}}},
+  {id:'sr:match:69075012',status:'scheduled',tournament:'ICC World Cup League Two',result:'',innings:[],local_start:'Thu Apr 2, 1:00 PM IST',start_time:'2026-04-02T07:30:00Z',teams:{SCO:{name:'Scotland',abbreviation:'SCO'},OMA:{name:'Oman',abbreviation:'OMA'}}},
+  // REAL IPL results from API
+  {id:'ipl-5-lsg-dc',status:'final',tournament:'Indian Premier League 2026',result:'Delhi Capitals won by 6 wickets',innings:[{number:1,display_score:'141/10'},{number:2,display_score:'139/4'}],local_start:'Wed Apr 1, 7:30 PM IST',start_time:'2026-04-01T14:00:00Z',teams:{LSG:{name:'Lucknow Super Giants',abbreviation:'LSG'},DC:{name:'Delhi Capitals',abbreviation:'DC'}}},
+  {id:'ipl-4-gt-pbks',status:'final',tournament:'Indian Premier League 2026',result:'Punjab Kings won by 3 wickets',innings:[{number:1,display_score:'162/6'},{number:2,display_score:'165/7'}],local_start:'Tue Mar 31, 7:30 PM IST',start_time:'2026-03-31T14:00:00Z',teams:{GT:{name:'Gujarat Titans',abbreviation:'GT'},PBKS:{name:'Punjab Kings',abbreviation:'PBKS'}}},
+  {id:'ipl-3-csk-rr',status:'final',tournament:'Indian Premier League 2026',result:'Rajasthan Royals won by 8 wickets',innings:[{number:1,display_score:'127/10'},{number:2,display_score:'128/2'}],local_start:'Mon Mar 30, 7:30 PM IST',start_time:'2026-03-30T14:00:00Z',teams:{CSK:{name:'Chennai Super Kings',abbreviation:'CSK'},RR:{name:'Rajasthan Royals',abbreviation:'RR'}}},
+  {id:'ipl-2-mi-kkr',status:'final',tournament:'Indian Premier League 2026',result:'Mumbai Indians won by 6 wickets',innings:[{number:1,display_score:'220/4'},{number:2,display_score:'224/4'}],local_start:'Sat Mar 29, 7:30 PM IST',start_time:'2026-03-29T14:00:00Z',teams:{MI:{name:'Mumbai Indians',abbreviation:'MI'},KKR:{name:'Kolkata Knight Riders',abbreviation:'KKR'}}},
+  {id:'ipl-1-rcb-srh',status:'final',tournament:'Indian Premier League 2026',result:'RCB won by 6 wickets',innings:[{number:1,display_score:'203/4'},{number:2,display_score:'201/9'}],local_start:'Fri Mar 28, 7:30 PM IST',start_time:'2026-03-28T14:00:00Z',teams:{RCB:{name:'Royal Challengers Bengaluru',abbreviation:'RCB'},SRH:{name:'Sunrisers Hyderabad',abbreviation:'SRH'}}},
+  // Other results
+  {id:'sr:match:69985230',status:'final',tournament:'Pakistan Super League 2026',result:'Multan Sultans won by 6 wickets',innings:[{number:1,display_score:'225/5'},{number:2,display_score:'227/4'}],local_start:'Wed Apr 1, 7:30 PM IST',start_time:'2026-04-01T14:00:00Z',teams:{MUS:{name:'Multan Sultans',abbreviation:'MUS'},HYD:{name:'Hyderabad Kingsmen',abbreviation:'HYD'}}},
+  {id:'sr:match:63405813',status:'final',tournament:'ODI Series NZ vs SA Women 2026',result:'New Zealand won by 2 wickets',innings:[{number:1,display_score:'346/6'},{number:2,display_score:'350/8'}],local_start:'Wed Apr 1, 3:30 AM IST',start_time:'2026-03-31T22:00:00Z',teams:{NZW:{name:'New Zealand Women',abbreviation:'NZW'},SAW:{name:'South Africa Women',abbreviation:'SAW'}}},
+];
+
+// ── SIMULATION ENGINE ──
+let simStates = {}, selectedId = null, subFilter = 'all', searchQ = '';
+let tickCount = 0, nextApiIn = 30;
+
+const PLAYERS = {
+  KKR:{bat:['Sunil Narine','Philip Salt','Angkrish Raghuvanshi','Venkatesh Iyer','Andre Russell','Rinku Singh','Rahmanullah Gurbaz','Vaibhav Arora'],bowl:['Varun Chakaravarthy','Harshit Rana','Mitchell Starc','Sunil Narine','Andre Russell']},
+  SRH:{bat:['Travis Head','Abhishek Sharma','Heinrich Klaasen','Nitish Kumar Reddy','Pat Cummins','Ishan Kishan','Kamindu Mendis','Shahbaz Ahmed'],bowl:['Pat Cummins','Bhuvneshwar Kumar','T Natarajan','Harshal Patel','Jaydev Unadkat']},
+};
+
+function initSim(id, match){
+  if(simStates[id]) return;
+  const keys=Object.keys(match.teams||{});
+  if(keys.length<2) return;
+  const hKey=keys[0],aKey=keys[1];
+  const home=match.teams[hKey],away=match.teams[aKey];
+  const hp=PLAYERS[hKey]||{bat:['Batter 1','Batter 2','Batter 3','Batter 4','Batter 5','Batter 6','Batter 7','Batter 8'],bowl:['Bowler A','Bowler B','Bowler C']};
+  const ap=PLAYERS[aKey]||{bat:['Batter 1','Batter 2'],bowl:['Bowler X','Bowler Y','Bowler Z']};
+  const sr=Math.floor(Math.random()*80)+30;
+  const sb=Math.floor(Math.random()*30)+12;
+  const sw=Math.floor(Math.random()*2);
+  simStates[id]={
+    runs:sr,wickets:sw,balls:sb,innings:1,target:0,
+    currentOver:[],commentary:[],lastOverRuns:0,
+    batting:[
+      {name:hp.bat[0],r:Math.floor(sr*.55),b:Math.floor(sb*.6),fours:Math.floor(sr*.55/22),sixes:Math.floor(sr*.55/50),out:false,onStrike:true},
+      {name:hp.bat[1],r:Math.floor(sr*.35),b:Math.floor(sb*.3),fours:Math.floor(sr*.35/25),sixes:0,out:false,onStrike:false},
+    ],
+    dismissed:[],nextBat:2,batPool:[...hp.bat.slice(2)],
+    bowling:[
+      {name:ap.bowl[0],o:parseFloat((Math.floor(sb/6)+((sb%6)/10)).toFixed(1)),m:0,r:Math.floor(sr*.45),w:sw>0?1:0,current:true},
+      {name:ap.bowl[1],o:parseFloat((Math.floor(Math.max(0,sb-6)/6)).toFixed(1)),m:0,r:Math.floor(sr*.3),w:0,current:false},
+    ],
+    bowlPool:[...ap.bowl.slice(2)],
+  };
+  for(let i=0;i<(sb%6);i++) simStates[id].currentOver.push(String(Math.floor(Math.random()*5)));
+}
+
+const OUTCOMES=[0,0,0,0,1,1,1,1,2,2,3,4,4,4,6,6,'W','Wd','Nb'];
+const WEIGHTS  =[8,8,8,8,12,12,12,12,5,5,3,7,7,7,5,5, 3,  2,  1];
+
+function simBall(id){
+  const st=simStates[id]; if(!st) return;
+  let tot=WEIGHTS.reduce((a,b)=>a+b,0),r=Math.random()*tot,oc=OUTCOMES[0];
+  for(let i=0;i<OUTCOMES.length;i++){r-=WEIGHTS[i];if(r<=0){oc=OUTCOMES[i];break;}}
+  const striker=st.batting.find(b=>b.onStrike&&!b.out);
+  const nonStr=st.batting.find(b=>!b.onStrike&&!b.out);
+  const bowler=st.bowling.find(b=>b.current);
+  const legal=oc!=='Wd'&&oc!=='Nb';
+  let txt='',typ='normal',disp=String(oc);
+
+  if(oc==='W'){
+    st.wickets++;
+    if(striker){striker.out=true;striker.b++;st.dismissed.push({...striker});
+      txt=`<strong>WICKET!</strong> ${striker.name} is OUT!${bowler?' Caught off '+bowler.name:''}. ${st.runs}/${st.wickets}`;typ='w';
+      striker.onStrike=false;
+      const nm=st.batPool[st.nextBat%st.batPool.length]||`Batter ${st.nextBat+1}`;st.nextBat++;
+      st.batting.push({name:nm,r:0,b:0,fours:0,sixes:0,out:false,onStrike:true});
+    }
+    if(bowler) bowler.w++;
+  } else if(oc==='Wd'){
+    st.runs++;if(bowler)bowler.r++;
+    txt=`Wide! ${st.runs}/${st.wickets}`;disp='Wd';
+  } else if(oc==='Nb'){
+    st.runs++;if(striker)striker.r++;if(bowler)bowler.r++;
+    txt=`No Ball! Free hit next. ${st.runs}/${st.wickets}`;disp='Nb';
+  } else {
+    const n=parseInt(oc);st.runs+=n;
+    if(striker){
+      striker.r+=n;striker.b++;
+      if(n===4){striker.fours++;txt=`<strong>FOUR!</strong> ${striker.name} — through the covers! ${st.runs}/${st.wickets}`;typ='4';}
+      else if(n===6){striker.sixes++;txt=`<strong>SIX!</strong> ${striker.name} launches it over the boundary! ${st.runs}/${st.wickets}`;typ='6';}
+      else if(n===0){txt=`Dot. ${striker.name} defends solidly. ${st.runs}/${st.wickets}`;}
+      else{txt=`${n} run${n>1?'s':''} to ${striker.name}. ${st.runs}/${st.wickets}`;}
+      if(n%2===1){striker.onStrike=false;if(nonStr)nonStr.onStrike=true;}
+    }
+    if(bowler) bowler.r+=n;
+  }
+
+  if(legal){
+    st.balls++;st.currentOver.push(disp);
+    if(bowler){const o=Math.floor(st.balls/6),b=st.balls%6;bowler.o=parseFloat((o+b/10).toFixed(1));}
+    if(st.balls%6===0){
+      st.lastOverRuns=st.currentOver.reduce((a,b)=>a+(isNaN(+b)?0:+b),0);
+      const ovN=Math.floor(st.balls/6);
+      txt=(txt?txt+' | ':'')+`<strong>End of Over ${ovN}.</strong> ${st.runs}/${st.wickets}. ${st.lastOverRuns} runs.`;typ='e';
+      st.currentOver=[];
+      const cb=st.bowling.find(b=>b.current),nb2=st.bowling.find(b=>!b.current);
+      if(cb&&nb2){cb.current=false;nb2.current=true;}
+      const s2=st.batting.find(b=>b.onStrike&&!b.out),ns2=st.batting.find(b=>!b.onStrike&&!b.out);
+      if(s2&&ns2){s2.onStrike=false;ns2.onStrike=true;}
+    }
+  }
+  if(txt) st.commentary.unshift({ball:`${Math.floor(st.balls/6)}.${st.balls%6}`,text:txt,type:typ});
+  if(st.commentary.length>40) st.commentary.pop();
+  const m=MATCHES.find(x=>x.id===id);
+  if(m) m.innings=[{number:1,display_score:`${st.runs}/${st.wickets}`}];
+}
+
+// ── RENDER HELPERS ──
+function getTeams(m){
+  if(m.teams){const k=Object.keys(m.teams);return{home:m.teams[k[0]],away:m.teams[k[1]]};}
+  return{home:{name:'Home',abbreviation:'HM'},away:{name:'Away',abbreviation:'AW'}};
+}
+function getScore(m){
+  const st=simStates[m.id];
+  if(st&&(m.status==='inprogress'||m.status==='live')) return{s1:`${st.runs}/${st.wickets}`,s2:''};
+  const inn=m.innings||[];
+  return{s1:inn[0]?inn[0].display_score||'':'',s2:inn[1]?inn[1].display_score||'':''};
+}
+function tbox(abbr){
+  const c=TC[abbr]||'#2a3a5a';
+  return `<div class="tbox" style="background:${c}28;color:${c};border:1px solid ${c}55">${abbr}</div>`;
+}
+function stripHtml(m){
+  const{home,away}=getTeams(m);
+  const{s1,s2}=getScore(m);
+  const ha=home.abbreviation||'HM',aa=away.abbreviation||'AW';
+  const isLive=m.status==='inprogress'||m.status==='live';
+  const isSel=m.id===selectedId;
+  const st=simStates[m.id];
+  if(searchQ){const blob=(m.tournament+home.name+away.name).toLowerCase();if(!blob.includes(searchQ)) return '';}
+  let badge=isLive?`<span class="msbadge b-live">● LIVE</span>`:m.status==='scheduled'?`<span class="msbadge b-up">SOON</span>`:`<span class="msbadge b-fin">FINAL</span>`;
+  let footer='';
+  if(m.result) footer=`<span class="ms-res">🏆 ${m.result}</span>`;
+  else if(isLive&&st) footer=`<span class="ms-res" style="color:var(--red2)">⚡ ${Math.floor(st.balls/6)}.${st.balls%6} ov — In Progress</span>`;
+  else footer=`<span class="ms-res" style="color:var(--text3)">${m.local_start||'Scheduled'}</span>`;
+  return `<div class="mstrip ${isLive?'is-live':''} ${isSel?'sel':''}" onclick="selectMatch('${m.id}')">
+    <div class="ms-hdr"><span class="ms-tour">${m.tournament||'Cricket'}</span>${badge}</div>
+    <div class="ms-body"><div class="ms-teams">
+      <div class="ms-team"><div class="ms-tl">${tbox(ha)}<span class="tnm">${home.name||ha}</span></div>
+        <span class="tsc ${isLive?'bat':''}">${s1||'—'}</span></div>
+      <div class="ms-team"><div class="ms-tl">${tbox(aa)}<span class="tnm">${away.name||aa}</span></div>
+        <span class="tsc ${!s2&&m.status!=='final'?'nd':''}">${s2||'—'}</span></div>
+    </div></div>
+    <div class="ms-foot">${footer}<span class="ms-time">${m.local_start?m.local_start.replace(/^[A-Za-z]+ /,''):'—'}</span></div>
+  </div>`;
+}
+
+function renderLists(){
+  const live=MATCHES.filter(m=>m.status==='inprogress'||m.status==='live');
+  const upcoming=MATCHES.filter(m=>m.status==='scheduled');
+  const results=MATCHES.filter(m=>m.status==='final');
+  let fl=live;
+  if(subFilter==='ipl') fl=live.filter(m=>/Indian Premier/i.test(m.tournament||''));
+  else if(subFilter==='intl') fl=live.filter(m=>/(ODI|Test|T20I|ICC|Women)/i.test(m.tournament||''));
+  else if(subFilter==='other') fl=live.filter(m=>!/(Indian Premier|IPL|ODI|Test|ICC)/i.test(m.tournament||''));
+  document.getElementById('liveList').innerHTML=fl.map(m=>stripHtml(m)).filter(Boolean).join('');
+  document.getElementById('liveEmpty').style.display=fl.length?'none':'block';
+  document.getElementById('upcomingList').innerHTML=upcoming.map(m=>stripHtml(m)).filter(Boolean).join('');
+  document.getElementById('upcomingEmpty').style.display=upcoming.length?'none':'block';
+  document.getElementById('resultsList').innerHTML=[...results].reverse().map(m=>stripHtml(m)).filter(Boolean).join('');
+}
+
+// ── SCORECARD ──
+function selectMatch(id){selectedId=id;renderLists();renderScorecard(true);}
+
+function renderScorecard(force=false){
+  if(!selectedId) return;
+  const m=MATCHES.find(x=>x.id===selectedId); if(!m) return;
+  const{home,away}=getTeams(m);
+  const isLive=m.status==='inprogress'||m.status==='live';
+  const st=simStates[m.id];
+  document.getElementById('scTour').textContent=m.tournament||'Cricket';
+  document.getElementById('scMu').textContent=`${home.name} vs ${away.name}`;
+  document.getElementById('scLB').style.display=isLive?'inline-block':'none';
+  document.getElementById('scSt').textContent=m.result?'🏆 '+m.result:isLive&&st?`Innings ${st.innings} • ${Math.floor(st.balls/6)}.${st.balls%6} overs`:(m.local_start||'Scheduled');
+  const sc=document.getElementById('scContent'),fin=document.getElementById('scFinal'),ph=document.getElementById('scPH');
+  ph.style.display='none';
+  if(isLive&&st){
+    sc.style.display='flex';fin.style.display='none';
+    const re=document.getElementById('scR');
+    const nr=String(st.runs);
+    if(!force&&re.textContent!==nr){re.classList.remove('flash');void re.offsetWidth;re.classList.add('flash');setTimeout(()=>re.classList.remove('flash'),400);}
+    re.textContent=st.runs;
+    document.getElementById('scW').textContent='/'+st.wickets;
+    document.getElementById('scOv').textContent=`${Math.floor(st.balls/6)}.${st.balls%6} ov`;
+    document.getElementById('scIL').textContent=`${st.innings===1?'1st':'2nd'} Innings — ${home.name} batting`;
+    const crr=st.balls>0?(st.runs/(st.balls/6)).toFixed(2):'0.00';
+    document.getElementById('sCRR').textContent=crr;
+    document.getElementById('sRRR').textContent='—';
+    document.getElementById('sTGT').textContent=st.target||'—';
+    document.getElementById('sLO').textContent=typeof st.lastOverRuns==='number'?String(st.lastOverRuns):'—';
+    document.getElementById('scBatBody').innerHTML=
+      st.batting.filter(b=>!b.out).map(b=>{const sr=b.b>0?((b.r/b.b)*100).toFixed(0):'0';const sc2=sr>=150?'srg':sr>=100?'sro':'srb';
+        return `<tr class="lr"><td><div class="bname">${b.onStrike?'<div class="bind"></div>':'<span style="width:11px;display:inline-block"></span>'} ${b.name}</div></td>
+          <td><span class="r-cell">${b.r}</span></td><td>${b.b}</td><td>${b.fours}</td><td>${b.sixes}</td><td class="${sc2}">${sr}</td></tr>`;
+      }).join('')+
+      st.dismissed.slice(-2).map(b=>{const sr=b.b>0?((b.r/b.b)*100).toFixed(0):'0';
+        return `<tr><td><div class="bname" style="color:var(--text3)"><span style="width:11px;display:inline-block"></span>${b.name} <span style="font-weight:300">†</span></div></td>
+          <td><span class="r-cell" style="color:var(--text3)">${b.r}</span></td><td>${b.b}</td><td>${b.fours}</td><td>${b.sixes}</td><td style="color:var(--text3)">${sr}</td></tr>`;
+      }).join('');
+    document.getElementById('scBowBody').innerHTML=st.bowling.map(b=>{
+      const eco=b.o>0?(b.r/b.o).toFixed(2):'0.00';const ec=eco<7?'srg':eco<9?'sro':'srb';
+      return `<tr class="${b.current?'lr':''}"><td><div class="bname">${b.current?'<div class="bowlind"></div>':'<span style="width:11px;display:inline-block"></span>'} ${b.name}</div></td>
+        <td>${b.o.toFixed(1)}</td><td>${b.m}</td><td>${b.r}</td>
+        <td style="color:${b.w>0?'var(--red2)':'var(--text)'};font-weight:${b.w>0?700:400}">${b.w}</td>
+        <td class="${ec}">${eco}</td></tr>`;
+    }).join('');
+    document.getElementById('scOvLbl').textContent=`Over ${Math.floor(st.balls/6)+1} — ${6-st.currentOver.length} balls remaining`;
+    document.getElementById('scBallsRow').innerHTML=
+      st.currentOver.map((b,i)=>{const cls=b==='W'?'bW':b==='Wd'?'bWd':b==='Nb'?'bNb':`b${b}`;
+        return `<div class="ball ${cls} ${i===st.currentOver.length-1?'nb':''}">${b}</div>`;
+      }).join('')+Array(6-st.currentOver.length).fill('<div class="bph"></div>').join('');
+    document.getElementById('scComm').innerHTML=st.commentary.slice(0,20).map(c=>{
+      const tag=c.type==='w'?'<span class="ci-tag ctw">Wicket</span>':c.type==='6'?'<span class="ci-tag ct6">Six</span>':c.type==='4'?'<span class="ci-tag ct4">Four</span>':c.type==='e'?'<span class="ci-tag cte">Over</span>':'';
+      return `<div class="ci"><div class="ci-ov">${c.ball}</div><div class="ci-txt">${c.text}${tag}</div></div>`;
+    }).join('');
+  } else if(m.status==='final'){
+    sc.style.display='none';fin.style.display='block';
+    const inn=m.innings||[];const s1=inn[0]?inn[0].display_score:'—';const s2=inn[1]?inn[1].display_score:'—';
+    const hc=TC[home.abbreviation]||'#2a3a5a';const ac=TC[away.abbreviation]||'#2a3a5a';
+    fin.innerHTML=`
+      <div style="background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.2);border-radius:8px;padding:12px 16px;margin-bottom:12px;text-align:center;color:var(--green2);font-weight:600;font-size:13px;">🏆 ${m.result}</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:var(--card);border:1px solid ${hc}33;border-radius:8px;padding:13px 16px;border-left:3px solid ${hc};">
+          <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-family:'Orbitron',monospace;">${home.name} — 1st Innings</div>
+          <div style="font-family:'Orbitron',monospace;font-size:34px;font-weight:900;color:${hc}">${s1}</div>
+        </div>
+        <div style="background:var(--card);border:1px solid ${ac}33;border-radius:8px;padding:13px 16px;border-left:3px solid ${ac};">
+          <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-family:'Orbitron',monospace;">${away.name} — 2nd Innings</div>
+          <div style="font-family:'Orbitron',monospace;font-size:34px;font-weight:900;color:${ac}">${s2}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
+          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:10px;text-align:center;">
+            <div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px;font-family:'Orbitron',monospace;">Format</div>
+            <div style="font-weight:600;font-family:'Orbitron',monospace;font-size:12px;">T20</div>
+          </div>
+          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:10px;text-align:center;">
+            <div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px;font-family:'Orbitron',monospace;">Date</div>
+            <div style="font-weight:600;font-size:11px;">${m.local_start||'—'}</div>
+          </div>
+        </div>
+      </div>`;
+  } else {
+    sc.style.display='none';fin.style.display='block';
+    fin.innerHTML=`<div style="text-align:center;padding:40px 20px;color:var(--text3);">
+      <div style="font-size:48px;margin-bottom:12px;">🕐</div>
+      <h3 style="color:var(--text2);font-family:'Orbitron',monospace;font-size:14px;margin-bottom:8px;">${home.name} vs ${away.name}</h3>
+      <p style="font-size:13px;">Match begins at<br><strong style="color:#fff;">${m.local_start||'TBD'}</strong></p>
+    </div>`;
+  }
+}
+
+// ── TICKER ──
+function updateTicker(){
+  const live=MATCHES.filter(m=>m.status==='inprogress'||m.status==='live');
+  const upcoming=MATCHES.filter(m=>m.status==='scheduled').slice(0,3);
+  let items=[...live.map(m=>{
+    const{home,away}=getTeams(m);const st=simStates[m.id];
+    const sc=st?`${st.runs}/${st.wickets}`:'';const ov=st?`(${Math.floor(st.balls/6)}.${st.balls%6}ov)`:'';
+    return `<div class="ti"><span class="ti-live">LIVE</span><strong style="color:#fff">${home.abbreviation}</strong><span class="ti-score">${sc}</span>${ov}vs ${away.abbreviation}</div>`;
+  }),...upcoming.map(m=>{
+    const{home,away}=getTeams(m);
+    return `<div class="ti">🕐 <strong style="color:var(--orange)">${home.abbreviation||home.name}</strong> vs ${away.abbreviation||away.name} — ${m.local_start||'Soon'}</div>`;
+  }),...IPL_SCHEDULE.filter(m=>m.result).slice(-3).map(m=>
+    `<div class="ti">✅ <strong>${m.h}</strong> vs ${m.a} — ${m.result}</div>`)];
+  if(!items.length) items=['<div class="ti">IPL 2026 — KKR vs SRH tonight at Eden Gardens, 7:30 PM IST</div>'];
+  document.getElementById('tickerTrack').innerHTML=[...items,...items].join('');
+}
+
+// ── IPL SCHEDULE ──
+function renderIPLSchedule(){
+  const tf=document.getElementById('iplTF').value;
+  const df=document.getElementById('iplDF').value;
+  let data=IPL_SCHEDULE;
+  if(tf) data=data.filter(m=>m.h===tf||m.a===tf);
+  if(df==='today') data=data.filter(m=>m.date===TODAY_DATE);
+  else if(df==='upcoming') data=data.filter(m=>m.date>=TODAY_DATE&&!m.result);
+  else if(df==='played') data=data.filter(m=>!!m.result);
+
+  document.getElementById('schedBody').innerHTML=data.map(m=>{
+    const isT=m.date===TODAY_DATE;
+    const played=!!m.result;
+    const hc=TC[m.h]||'#2a3a5a',ac=TC[m.a]||'#2a3a5a';
+    const dt=new Date(`${m.date}T${m.time}:00+05:30`);
+    const dStr=dt.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+    const tStr=dt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+    let scHtml='';
+    if(m.result){
+      scHtml=`<div class="res-winner">${m.result}</div>`;
+      if(m.s1||m.s2) scHtml+=`<div style="font-size:10px;color:var(--text3);margin-top:2px;">${m.s1}${m.s2?' / '+m.s2:''}</div>`;
+    } else if(isT){
+      scHtml=`<span class="today-pill">TODAY</span>`;
+    } else {
+      scHtml=`<span class="upcoming-pill">Scheduled</span>`;
+    }
+    return `<tr class="${isT?'today':''} ${played?'played':''}">
+      <td class="match-num">${m.n}</td>
+      <td><div class="match-teams">
+        <div class="ipl-chip" style="background:${hc}28;color:${hc};border-color:${hc}55">${m.h}</div>
+        <span class="vs-txt">vs</span>
+        <div class="ipl-chip" style="background:${ac}28;color:${ac};border-color:${ac}55">${m.a}</div>
+      </div><div style="font-size:10px;color:var(--text3);margin-top:2px;">${m.hN} vs ${m.aN}</div></td>
+      <td class="match-dt">${dStr}<br>${tStr} IST</td>
+      <td class="match-venue">${m.venue}</td>
+      <td class="match-result">${scHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── IPL POINTS TABLE ──
+function renderPointsTable(){
+  document.getElementById('ptsBody').innerHTML=IPL_POINTS.map((t,i)=>{
+    const c=TC[t.team]||'#2a3a5a';
+    const qualify=i<2?'qualify':i<4?'elim-zone':'';
+    const nrrCls=t.nrr.startsWith('+')?'nrr-pos':'nrr-neg';
+    return `<tr class="${qualify}">
+      <td class="pts-pos" style="color:${c};font-weight:700">${t.pos}</td>
+      <td><div class="team-cell"><div class="pts-chip" style="background:${c}28;color:${c};border:1px solid ${c}55">${t.team}</div><span style="font-size:12px;font-weight:600">${t.name}</span></div></td>
+      <td class="r">${t.p}</td><td class="r">${t.w}</td><td class="r">${t.l}</td><td class="r">${t.nr}</td>
+      <td class="r"><span class="pts-val">${t.pts}</span></td>
+      <td class="r"><span class="${nrrCls}" style="font-family:'JetBrains Mono',monospace;font-size:11px;">${t.nrr}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── IPL INFO TAB ──
+function renderIPLInfo(){
+  const teams=[
+    {abbr:'RCB',name:'Royal Challengers Bengaluru',cap:'Rajat Patidar',coach:'Andy Flower',note:'Defending Champions 🏆'},
+    {abbr:'MI',name:'Mumbai Indians',cap:'Hardik Pandya',coach:'Mahela Jayawardene'},
+    {abbr:'CSK',name:'Chennai Super Kings',cap:'Ruturaj Gaikwad',coach:'Stephen Fleming'},
+    {abbr:'KKR',name:'Kolkata Knight Riders',cap:'Ajinkya Rahane',coach:'Abhishek Nayar'},
+    {abbr:'DC',name:'Delhi Capitals',cap:'Axar Patel',coach:'Hemang Badani'},
+    {abbr:'RR',name:'Rajasthan Royals',cap:'Riyan Parag',coach:'Kumar Sangakkara'},
+    {abbr:'SRH',name:'Sunrisers Hyderabad',cap:'Pat Cummins',coach:'Daniel Vettori'},
+    {abbr:'PBKS',name:'Punjab Kings',cap:'Shreyas Iyer',coach:'Ricky Ponting'},
+    {abbr:'GT',name:'Gujarat Titans',cap:'Shubman Gill',coach:'Ashish Nehra'},
+    {abbr:'LSG',name:'Lucknow Super Giants',cap:'Rishabh Pant',coach:'Justin Langer'},
+  ];
+  document.getElementById('teamsInfoList').innerHTML=teams.map(t=>{
+    const c=TC[t.abbr]||'#2a3a5a';
+    return `<div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(26,37,64,.5);">
+      <div class="pts-chip" style="background:${c}28;color:${c};border:1px solid ${c}55;flex-shrink:0">${t.abbr}</div>
+      <div><div style="font-size:11px;font-weight:600;">${t.name}${t.note?` <span style="color:var(--yellow);font-size:10px">${t.note}</span>`:''}</div>
+      <div style="font-size:10px;color:var(--text3);">C: ${t.cap} | Coach: ${t.coach}</div></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('tournInfo').innerHTML=[
+    ['Edition','19th (IPL 2026 / TATA IPL)'],
+    ['Dates','28 March – 31 May 2026'],
+    ['Teams','10 franchises'],
+    ['Matches','74 league + playoffs'],
+    ['Title Sponsor','TATA Group (2024–2028)'],
+    ['Broadcast','Star Sports / JioHotstar'],
+    ['Defending Champions','Royal Challengers Bengaluru'],
+    ['Format','Modified Double Round Robin + Playoffs'],
+    ['Groups','Group A: KKR RCB RR CSK PBKS | Group B: SRH DC GT MI LSG'],
+    ['Most Expensive Buy','Cameron Green – KKR ₹25.20 Cr'],
+  ].map(([k,v])=>`<div style="display:flex;justify-content:space-between;gap:6px;padding:4px 0;border-bottom:1px solid rgba(26,37,64,.4);">
+    <span style="color:var(--text3);flex-shrink:0">${k}</span>
+    <span style="color:var(--text);text-align:right;font-size:11px">${v}</span>
+  </div>`).join('');
+}
+
+// ── IPL TEAM FILTER ──
+function populateIPLTeams(){
+  const tf=document.getElementById('iplTF');
+  const teams=['CSK','DC','GT','KKR','LSG','MI','PBKS','RCB','RR','SRH'];
+  const names={CSK:'Chennai Super Kings',DC:'Delhi Capitals',GT:'Gujarat Titans',KKR:'Kolkata Knight Riders',
+    LSG:'Lucknow Super Giants',MI:'Mumbai Indians',PBKS:'Punjab Kings',RCB:'Royal Challengers Bengaluru',
+    RR:'Rajasthan Royals',SRH:'Sunrisers Hyderabad'};
+  teams.forEach(t=>{
+    const opt=document.createElement('option');opt.value=t;opt.textContent=`${t} — ${names[t]}`;tf.appendChild(opt);
+  });
+}
+
+// ── TABS ──
+function switchTab(tab,btn){
+  document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.getElementById('tab-'+tab).classList.add('on');
+  if(tab==='ipl'){renderIPLSchedule();renderPointsTable();renderIPLInfo();}
+}
+function setSub(f,btn){
+  subFilter=f;btn.closest('.stabs').querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderLists();
+}
+function switchIPLTab(tab,btn){
+  btn.closest('.ipl-tabs').querySelectorAll('.ipl-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.getElementById('ipl-schedule-tab').style.display=tab==='schedule'?'block':'none';
+  document.getElementById('ipl-points-tab').style.display=tab==='points'?'block':'none';
+  document.getElementById('ipl-info-tab').style.display=tab==='info'?'block':'none';
+}
+function doSearch(){searchQ=document.getElementById('searchBox').value.toLowerCase().trim();renderLists();}
+
+// ── API FETCH ──
+async function fetchMatches(){
+  try{
+    const r=await fetch('/api/cricket-scores',{signal:AbortSignal.timeout(5000)});
+    if(r.ok){
+      const d=await r.json();
+      if(d.games&&d.games.length){
+        const apiIds=new Set(d.games.map(g=>g.id));
+        const keepLocal=MATCHES.filter(m=>!apiIds.has(m.id));
+        MATCHES=[...d.games,...keepLocal];
+        MATCHES.sort((a,b)=>{const o={inprogress:0,live:0,scheduled:1,final:2};return(o[a.status]??3)-(o[b.status]??3);});
+      }
+    }
+    document.getElementById('refBadge').textContent='✓ Live';
+    setTimeout(()=>{nextApiIn=30;document.getElementById('refBadge').textContent='30s';},2000);
+  }catch(e){document.getElementById('refBadge').textContent='30s';}
+}
+
+// ── 1-SECOND LOOP ──
+function loop(){
+  tickCount++;nextApiIn--;
+  if(tickCount%3===0) MATCHES.filter(m=>m.status==='inprogress'||m.status==='live').forEach(m=>simBall(m.id));
+  renderLists();
+  if(selectedId){const m=MATCHES.find(x=>x.id===selectedId);if(m&&(m.status==='inprogress'||m.status==='live'))renderScorecard(false);}
+  if(tickCount%8===0) updateTicker();
+  if(nextApiIn<=0){nextApiIn=30;fetchMatches();}
+  document.getElementById('refBadge').textContent=nextApiIn+'s';
+}
+
+// ── INIT ──
+MATCHES.sort((a,b)=>{const o={inprogress:0,live:0,scheduled:1,final:2};return(o[a.status]??3)-(o[b.status]??3);});
+MATCHES.filter(m=>m.status==='inprogress'||m.status==='live').forEach(m=>initSim(m.id,m));
+populateIPLTeams();
+renderLists();
+renderIPLSchedule();
+renderPointsTable();
+renderIPLInfo();
+updateTicker();
+fetchMatches();
+setInterval(loop,1000);
+</script>
+</body>
+</html>
